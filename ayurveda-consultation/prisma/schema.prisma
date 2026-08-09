@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  PATIENT
+  ADMIN
+}
+
+enum AppointmentStatus {
+  SCHEDULED
+  COMPLETED
+  CANCELLED
+}
+
+enum ReportType {
+  PDF
+  IMAGE
+}
+
+model User {
+  id              Int             @id @default(autoincrement())
+  name            String
+  email           String          @unique
+  phone           String?
+  password        String
+  role            Role            @default(PATIENT)
+  age             Int?
+  gender          String?
+  address         String?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  appointments    Appointment[]   @relation("PatientAppointments")
+  reports         MedicalReport[]
+  prescriptions   Prescription[]
+  createdByRx     Prescription[]  @relation("PrescriptionCreatedBy")
+}
+
+model Appointment {
+  id                 Int               @id @default(autoincrement())
+  patientId          Int
+  patient            User              @relation("PatientAppointments", fields: [patientId], references: [id], onDelete: Cascade)
+  consultationType   String
+  date               DateTime
+  time               String
+  reason             String?
+  zoomLink           String?
+  status             AppointmentStatus @default(SCHEDULED)
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+}
+
+model MedicalReport {
+  id          Int        @id @default(autoincrement())
+  patientId   Int
+  patient     User       @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  name        String
+  storedName  String
+  path        String
+  mimeType    String
+  size        Int
+  type        ReportType
+  createdAt   DateTime   @default(now())
+}
+
+model Prescription {
+  id             Int      @id @default(autoincrement())
+  patientId      Int
+  patient        User     @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  createdById    Int
+  createdBy      User     @relation("PrescriptionCreatedBy", fields: [createdById], references: [id])
+  diagnosis      String?
+  medicines      String
+  instructions   String?
+  pdfPath        String?
+  createdAt      DateTime @default(now())
+}
