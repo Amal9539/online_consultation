@@ -1,3 +1,88 @@
+# services:
+#   db:
+#     image: postgres:16-alpine
+#     container_name: ayurveda-db
+#     restart: unless-stopped
+#     environment:
+#       POSTGRES_USER: ayurveda
+#       POSTGRES_PASSWORD: ayurveda
+#       POSTGRES_DB: ayurveda
+#     ports:
+#       - "5432:5432"
+#     volumes:
+#       - postgres_data:/var/lib/postgresql/data
+#     healthcheck:
+#       test: ["CMD-SHELL", "pg_isready -U ayurveda -d ayurveda"]
+#       interval: 5s
+#       timeout: 5s
+#       retries: 10
+
+#   app:
+#     build: .
+#     container_name: ayurveda-app
+#     restart: unless-stopped
+#     depends_on:
+#       db:
+#         condition: service_healthy
+#     environment:
+#       DATABASE_URL: postgresql://ayurveda:ayurveda@db:5432/ayurveda?schema=public
+#       JWT_SECRET: change-this-secret-in-production
+#       NEXT_PUBLIC_APP_URL: http://localhost:3000
+#       UPLOAD_DIR: ./uploads/reports
+#       PRESCRIPTION_DIR: ./prescriptions
+#       MAX_FILE_SIZE_MB: 10
+#     ports:
+#       - "3000:3000"
+#     volumes:
+#       - ./uploads:/app/uploads
+#       - ./prescriptions:/app/prescriptions
+
+# volumes:
+#   postgres_data:
+
+
+# services:
+#   db:
+#     image: postgres:16-alpine
+#     container_name: ayurveda-db
+#     restart: unless-stopped
+#     environment:
+#       POSTGRES_USER: ayurveda
+#       POSTGRES_PASSWORD: ayurveda
+#       POSTGRES_DB: ayurveda
+#     ports:
+#       - "5432:5432"
+#     volumes:
+#       - postgres_data:/var/lib/postgresql/data
+#     healthcheck:
+#       test: ["CMD-SHELL", "pg_isready -U ayurveda -d ayurveda"]
+#       interval: 5s
+#       timeout: 5s
+#       retries: 10
+
+#   app:
+#     build: .
+#     container_name: ayurveda-app
+#     restart: unless-stopped
+#     depends_on:
+#       db:
+#         condition: service_healthy
+#     environment:
+#       DATABASE_URL: "postgresql://ayurveda:ayurveda@db:5432/ayurveda?schema=public"
+#       JWT_SECRET: "change-this-secret-in-production"
+#       NEXT_PUBLIC_APP_URL: "http://localhost:3000"
+#       UPLOAD_DIR: "./uploads/reports"
+#       PRESCRIPTION_DIR: "./prescriptions"
+#       MAX_FILE_SIZE_MB: "10"
+#     ports:
+#       - "3000:3000"
+#     volumes:
+#       - ./uploads:/app/uploads
+#       - ./prescriptions:/app/prescriptions
+
+# volumes:
+#   postgres_data:
+
 services:
   db:
     image: postgres:16-alpine
@@ -25,14 +110,14 @@ services:
       db:
         condition: service_healthy
     environment:
-      DATABASE_URL: postgresql://ayurveda:ayurveda@db:5432/ayurveda?schema=public
-      JWT_SECRET: change-this-secret-in-production
-      NEXT_PUBLIC_APP_URL: http://localhost:3000
-      UPLOAD_DIR: ./uploads/reports
-      PRESCRIPTION_DIR: ./prescriptions
-      MAX_FILE_SIZE_MB: 10
+      DATABASE_URL: "postgresql://ayurveda:ayurveda@localhost:5432/ayurveda?schema=public"
+      JWT_SECRET: "change-this-secret-in-production"
+      NEXT_PUBLIC_APP_URL: "http://localhost:3000"
+      UPLOAD_DIR: "./uploads/reports"
+      PRESCRIPTION_DIR: "./prescriptions"
+      MAX_FILE_SIZE_MB: "10"
     ports:
-      - "3000:3000"
+      - "3001:3000"
     volumes:
       - ./uploads:/app/uploads
       - ./prescriptions:/app/prescriptions

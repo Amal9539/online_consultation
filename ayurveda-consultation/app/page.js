@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, CalendarCheck, Leaf, ShieldCheck, Video } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -12,6 +15,19 @@ const services = [
 ];
 
 export default function HomePage() {
+  const [user, setUser] = useState(null);
+  const [checked, setChecked] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/auth/me", { cache: "no-store" })
+      .then((r) => r.json())
+      .then((data) => setUser(data.user))
+      .catch(() => setUser(null))
+      .finally(() => setChecked(true));
+  }, []);
+
+  const dashboardHref = user?.role === "ADMIN" ? "/admin/dashboard" : "/patient/dashboard";
+
   return (
     <>
       <section className="hero-pattern">
@@ -29,7 +45,17 @@ export default function HomePage() {
               from the comfort of your home.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/register"><Button size="lg">Book Consultation <ArrowRight className="ml-2 h-4 w-4" /></Button></Link>
+              {checked && (
+                user ? (
+                  <Link href={dashboardHref}>
+                    <Button size="lg">Go to Dashboard <ArrowRight className="ml-2 h-4 w-4" /></Button>
+                  </Link>
+                ) : (
+                  <Link href="/register">
+                    <Button size="lg">Book Consultation <ArrowRight className="ml-2 h-4 w-4" /></Button>
+                  </Link>
+                )
+              )}
               <Link href="/about"><Button size="lg" variant="outline">Learn More</Button></Link>
             </div>
           </div>
@@ -77,14 +103,16 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="container py-20 text-center">
-        <h2 className="text-4xl font-bold">Start Your Consultation</h2>
-        <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-          Register as a patient, book your appointment, attend the consultation,
-          and access your digital prescription.
-        </p>
-        <Link href="/register" className="mt-7 inline-block"><Button size="lg">Create Patient Account</Button></Link>
-      </section>
+      {checked && !user && (
+        <section className="container py-20 text-center">
+          <h2 className="text-4xl font-bold">Start Your Consultation</h2>
+          <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
+            Register as a patient, book your appointment, attend the consultation,
+            and access your digital prescription.
+          </p>
+          <Link href="/register" className="mt-7 inline-block"><Button size="lg">Create Patient Account</Button></Link>
+        </section>
+      )}
     </>
   );
 }

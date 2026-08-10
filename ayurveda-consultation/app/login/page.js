@@ -3,81 +3,191 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [form, setForm] = useState({ email: "", password: "" });
+
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
+
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  function handleChange(e) {
+    const { name, value } = e.target;
+
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  }
+
   async function submit(e) {
     e.preventDefault();
+
     setError("");
     setLoading(true);
 
+    // DEBUG: confirm exactly what's being submitted before it's sent.
+    // Remove this once the login issue is confirmed fixed.
+    console.log("DEBUG email:", JSON.stringify(form.email));
+    console.log("DEBUG password:", JSON.stringify(form.password));
+    console.log("DEBUG password length:", form.password.length);
+
     try {
       const res = await fetch("/api/auth/login", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify(form),
-});
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: form.email.trim().toLowerCase(),
+          password: form.password,
+        }),
+      });
 
-console.log("STATUS:", res.status);
+      console.log("STATUS:", res.status);
 
-const text = await res.text();
+      const text = await res.text();
 
-console.log("RAW RESPONSE:", text);
+      console.log("RAW RESPONSE:", text);
 
-let data;
+      let data;
 
-try {
-  data = JSON.parse(text);
-} catch (error) {
-  console.error("NOT JSON:", text);
-  throw new Error("API returned HTML instead of JSON");
-}
+      try {
+        data = JSON.parse(text);
+      } catch (jsonError) {
+        console.error("NOT JSON:", text);
 
-if (!res.ok) {
-  throw new Error(data.message || "Login failed");
-}
+        throw new Error(
+          "Server returned an invalid response. Please check the login API."
+        );
+      }
 
-console.log("LOGIN SUCCESS:", data);
+      if (!res.ok) {
+        throw new Error(data.message || "Invalid email or password.");
+      }
+
+      console.log("LOGIN SUCCESS:", data);
+
+      // Login successful — route based on role instead of a hardcoded /dashboard
+      if (data.user?.role === "ADMIN") {
+        router.push("/admin/dashboard");
+      } else {
+        router.push("/patient/dashboard");
+      }
+      router.refresh();
     } catch (err) {
-      setError(err.message);
+      console.error("LOGIN ERROR:", err);
+
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Something went wrong. Please try again."
+      );
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <main className="container flex min-h-[calc(100vh-128px)] items-center justify-center py-12">
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle className="text-2xl">Welcome Back</CardTitle>
-          <CardDescription>Login to your ARAYAL account.</CardDescription>
+    <main className="min-h-screen flex items-center justify-center bg-[#F8F5E9] px-4 py-10">
+      <Card className="w-full max-w-md shadow-lg">
+        <CardHeader className="space-y-2 text-center">
+          <CardTitle className="text-3xl font-bold">
+            Welcome Back
+          </CardTitle>
+
+          <CardDescription>
+            Login to your ARAYAL account.
+          </CardDescription>
         </CardHeader>
+
         <CardContent>
-          {error && <div className="mb-4 rounded-md bg-red-50 p-3 text-sm text-red-700">{error}</div>}
-          <form onSubmit={submit} className="space-y-5">
+          {/* autoComplete="off" on the <form> itself, plus per-field overrides below,
+              gives the best chance of stopping Chrome/Edge from auto-filling saved
+              credentials into these fields. */}
+          <form onSubmit={submit} className="space-y-6" autoComplete="off">
+            {/* Error */}
+            {error && (
+              <div className="rounded-md border border-red-200 bg-red-50 px-4 py-3">
+                <p className="text-sm text-red-600">
+                  {error}
+                </p>
+              </div>
+            )}
+
+            {/* Email */}
             <div className="space-y-2">
-              <Label>Email</Label>
-              <Input type="email" value={form.email} onChange={e => setForm({...form, email: e.target.value})} required />
+              <Label htmlFor="email">
+                Email
+              </Label>
+
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="Enter your email"
+                value={form.email}
+                onChange={handleChange}
+                required
+                disabled={loading}
+                autoComplete="off"
+              />
             </div>
+
+            {/* Password */}
             <div className="space-y-2">
-              <Label>Password</Label>
-              <Input type="password" value={form.password} onChange={e => setForm({...form, password: e.target.value})} required />
+              <Label htmlFor="password">
+                Password
+              </Label>
+
+              <Input
+                id="password"
+                name="password"
+                type="password"
+                placeholder="Enter your password"
+                value={form.password}
+                onChange={handleChange}
+                required
+                disabled={loading}
+                autoComplete="new-password"
+              />
             </div>
-            <Button className="w-full" disabled={loading}>{loading ? "Logging in..." : "Login"}</Button>
+
+            {/* Login Button */}
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={loading}
+            >
+              {loading ? "Logging in..." : "Login"}
+            </Button>
+
+            {/* Register */}
+            <p className="text-center text-sm text-gray-600">
+              New patient?{" "}
+              <Link
+                href="/register"
+                className="font-medium text-green-700 hover:underline"
+              >
+                Create an account
+              </Link>
+            </p>
           </form>
-          <p className="mt-5 text-center text-sm text-muted-foreground">
-            New patient? <Link href="/register" className="font-medium text-primary">Create an account</Link>
-          </p>
         </CardContent>
       </Card>
     </main>
