@@ -32,7 +32,7 @@ export async function POST(request) {
     if (!user) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     if (user.role !== "ADMIN") return NextResponse.json({ message: "Only admin can create prescriptions." }, { status: 403 });
 
-    const { patientId, diagnosis, medicines, instructions } = await request.json();
+    const { patientId, diagnosis, medicines, diet, instructions } = await request.json();
 
     if (!patientId || !medicines) {
       return NextResponse.json({ message: "Patient and medicines are required." }, { status: 400 });
@@ -76,6 +76,10 @@ export async function POST(request) {
       doc.fontSize(11).text(medicines);
       doc.moveDown();
 
+      doc.fontSize(14).text("Diet / Pathya-Apathya");
+      doc.fontSize(11).text(diet || "Not specified");
+      doc.moveDown();
+
       doc.fontSize(14).text("Instructions");
       doc.fontSize(11).text(instructions || "Follow the doctor's instructions.");
       doc.moveDown(3);
@@ -92,6 +96,7 @@ export async function POST(request) {
         createdById: Number(user.userId),
         diagnosis,
         medicines,
+        diet,
         instructions,
         pdfPath: filePath,
       },

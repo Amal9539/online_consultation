@@ -11,7 +11,7 @@ import { Select } from "@/components/ui/select";
 
 export default function AdminPrescriptionsPage() {
   const [patients, setPatients] = useState([]);
-  const [form, setForm] = useState({ patientId: "", diagnosis: "", medicines: "", instructions: "" });
+  const [form, setForm] = useState({ patientId: "", diagnosis: "", medicines: "", diet: "", instructions: "" });
   const [message, setMessage] = useState("");
 
   useEffect(() => {
@@ -29,7 +29,7 @@ export default function AdminPrescriptionsPage() {
     const data = await res.json();
     if (!res.ok) { setMessage(data.message || "Failed."); return; }
     setMessage("Prescription generated successfully. The PDF is now available to the patient.");
-    setForm({ patientId: "", diagnosis: "", medicines: "", instructions: "" });
+    setForm({ patientId: "", diagnosis: "", medicines: "", diet: "", instructions: "" });
   }
 
   return (
@@ -44,6 +44,7 @@ export default function AdminPrescriptionsPage() {
               <div className="space-y-2"><Label>Patient</Label><Select value={form.patientId} onChange={e => setForm({...form, patientId: e.target.value})} required><option value="">Select patient</option>{patients.map(p => <option key={p.id} value={p.id}>{p.name} — {p.email}</option>)}</Select></div>
               <div className="space-y-2"><Label>Diagnosis</Label><Textarea value={form.diagnosis} onChange={e => setForm({...form, diagnosis: e.target.value})} /></div>
               <div className="space-y-2"><Label>Medicines / Treatment</Label><Textarea value={form.medicines} onChange={e => setForm({...form, medicines: e.target.value})} required placeholder="Medicine name, dosage and duration" /></div>
+              <div className="space-y-2"><Label>Diet / Pathya-Apathya</Label><Textarea value={form.diet} onChange={e => setForm({...form, diet: e.target.value})} placeholder="Foods to include and avoid (e.g. Avoid: cold, oily, spicy food. Include: warm, light, freshly cooked meals)" /></div>
               <div className="space-y-2"><Label>Instructions</Label><Textarea value={form.instructions} onChange={e => setForm({...form, instructions: e.target.value})} /></div>
               <Button>Generate Prescription PDF</Button>
               {message && <p className="text-sm text-muted-foreground">{message}</p>}

@@ -76,6 +76,7 @@ model Prescription {
   createdBy      User     @relation("PrescriptionCreatedBy", fields: [createdById], references: [id])
   diagnosis      String?
   medicines      String
+  diet           String?   
   instructions   String?
   pdfPath        String?
   createdAt      DateTime @default(now())

@@ -1,10 +1,13 @@
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
+import { NextResponse } from "next/server";
 
-export default async function handler(req, res) {
+export async function GET(request) {
   try {
-    const user = await getCurrentUser(req);
-    if (!user || user.role !== "PATIENT") return res.status(403).json({ message: "Forbidden" });
+    const user = await getCurrentUser(request);
+    if (!user || user.role !== "PATIENT") {
+      return NextResponse.json({ message: "Forbidden" }, { status: 403 });
+    }
 
     const id = Number(user.userId);
 
@@ -12,12 +15,12 @@ export default async function handler(req, res) {
       prisma.user.findUnique({ where: { id }, select: { id: true, name: true, email: true } }),
       prisma.appointment.findMany({ where: { patientId: id }, orderBy: { date: "desc" }, take: 10 }),
       prisma.medicalReport.findMany({ where: { patientId: id }, orderBy: { createdAt: "desc" }, take: 10 }),
-      prisma.prescription.findMany({ where: { patientId: id }, orderBy: { createdAt: "desc" }, take: 10 })
+      prisma.prescription.findMany({ where: { patientId: id }, orderBy: { createdAt: "desc" }, take: 10 }),
     ]);
 
-    res.json({ user: profile, appointments, reports, prescriptions });
+    return NextResponse.json({ user: profile, appointments, reports, prescriptions }, { status: 200 });
   } catch (e) {
     console.error(e);
-    res.status(500).json({ message: "Server error." });
+    return NextResponse.json({ message: "Server error." }, { status: 500 });
   }
 }
