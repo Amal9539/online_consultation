@@ -1,8 +1,25 @@
-@"
 node_modules/
 .next/
 .env
 .env.local
 *.log
+*.zip
+uploads/
 prescriptions/
-"@ | Out-File -FilePath .gitignore -Encoding utf8
+
+# Docker / database files
+*.sql
+*.sqlite
+*.sqlite3
+
+# Large media files
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.webm
+
+# Build output
+dist/
+build/
+out/
