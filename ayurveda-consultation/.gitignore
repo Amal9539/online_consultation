@@ -1,0 +1,8 @@
+@"
+node_modules/
+.next/
+.env
+.env.local
+*.log
+prescriptions/
+"@ | Out-File -FilePath .gitignore -Encoding utf8
