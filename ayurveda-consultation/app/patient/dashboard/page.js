@@ -293,12 +293,22 @@ import { Button } from "@/components/ui/button";
 export default function PatientDashboard() {
   const [data, setData] = useState({ user: null, appointments: [], reports: [], prescriptions: [] });
 
-  useEffect(() => {
-    fetch("/api/patient/dashboard").then(r => r.json()).then(setData).catch(() => {});
-  }, []);
+ useEffect(() => {
+  fetch("/api/patient/dashboard")
+    .then((r) => r.json())
+    .then((res) =>
+      setData({
+        user: res.user ?? null,
+        appointments: Array.isArray(res.appointments) ? res.appointments : [],
+        reports: Array.isArray(res.reports) ? res.reports : [],
+        prescriptions: Array.isArray(res.prescriptions) ? res.prescriptions : [],
+      })
+    )
+    .catch(() => {});
+}, []);
 
-  const upcoming = data.appointments.filter(a => a.status === "SCHEDULED");
-  const nextVisit = upcoming[0];
+const upcoming = (data.appointments ?? []).filter((a) => a.status === "SCHEDULED");
+const nextVisit = upcoming[0];
 
   return (
     <div className="md:flex" style={{ background: "#FBF6EC" }}>
@@ -310,7 +320,7 @@ export default function PatientDashboard() {
 
       <PatientSidebar />
 
-      <main className="min-w-0 flex-1 p-5 md:p-10 font-body" style={{ color: "#2B2620" }}>
+      <main className="min-w-0 flex-1 p-5 md:p-10 font-body" style={{ color: "#2B2620" ,marginTop:"50px"}}>
 
         {/* Hero banner */}
         <div
@@ -337,7 +347,7 @@ export default function PatientDashboard() {
             </g>
           </svg>
 
-          <div className="relative z-10">
+          <div className="relative z-10,">
             <p className="font-body text-[12px] font-semibold uppercase tracking-[0.25em]" style={{ color: "#E7F0E4" }}>
               Patient dashboard
             </p>

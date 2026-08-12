@@ -59,9 +59,6 @@
 //     </div>
 //   );
 // }
-
-
-
 "use client";
 
 import { useState } from "react";
@@ -101,7 +98,7 @@ export default function BookAppointmentPage() {
   }
 
   const inputClass =
-    "rounded-xl border px-4 py-2.5 text-[14px] shadow-none focus-visible:ring-2 focus-visible:ring-offset-0";
+    "rounded-xl border px-4 py-3 text-[14px] shadow-none focus-visible:ring-2 focus-visible:ring-offset-0";
 
   return (
     <div className="md:flex" style={{ background: "#FBF6EC" }}>
@@ -126,12 +123,21 @@ export default function BookAppointmentPage() {
           outline: none;
           box-shadow: 0 0 0 3px rgba(107, 143, 113, 0.15) !important;
         }
+        /* Force the select trigger to its natural height, never stretch to fill parent */
+        .ayur-field select,
+        .ayur-field [data-slot="select-trigger"],
+        .ayur-field [role="combobox"] {
+          height: auto !important;
+          min-height: 46px !important;
+          max-height: 46px !important;
+          align-self: flex-start !important;
+        }
       `}</style>
 
       <PatientSidebar />
 
-      <main className="min-w-0 flex-1 p-5 font-body md:p-10" style={{ color: "#2B2620" }}>
-        <div className="mb-8">
+      <main className="flex min-w-0 flex-1 flex-col p-5 font-body md:min-h-screen md:p-10" style={{ color: "#2B2620",marginTop:"50px" }}>
+        <div className="mb-8 shrink-0">
           <p className="font-body text-[12px] font-semibold uppercase tracking-[0.25em]" style={{ color: "#B15A34" }}>
             Ayurveda Consultation
           </p>
@@ -143,44 +149,44 @@ export default function BookAppointmentPage() {
           </p>
         </div>
 
-        <Card className="max-w-2xl overflow-hidden rounded-2xl border-0 shadow-[0_1px_3px_rgba(43,38,32,0.06)]" style={{ background: "#FFFDF8" }}>
-          <div className="h-1.5 w-full" style={{ background: "linear-gradient(90deg, #6B8F71, #E3A857, #D97B4F)" }} />
+        <Card className="flex w-full flex-1 flex-col overflow-hidden rounded-2xl border-0 shadow-[0_1px_3px_rgba(43,38,32,0.06)]" style={{ background: "#FFFDF8" }}>
+          <div className="h-1.5 w-full shrink-0" style={{ background: "linear-gradient(90deg, #6B8F71, #E3A857, #D97B4F)" }} />
 
-          <CardHeader className="pb-2">
+          <CardHeader className="shrink-0 pb-2">
             <CardTitle className="font-display text-xl font-normal" style={{ color: "#3F5744" }}>
               Appointment details
             </CardTitle>
           </CardHeader>
 
-          <CardContent className="pt-2">
+          <CardContent className="flex flex-1 flex-col pt-2">
             {error && (
               <div
-                className="mb-5 rounded-xl px-4 py-3 text-sm"
+                className="mb-5 shrink-0 rounded-xl px-4 py-3 text-sm"
                 style={{ background: "rgba(217,123,79,0.1)", color: "#a5502c" }}
               >
                 {error}
               </div>
             )}
 
-            <form onSubmit={submit} className="ayur-field grid gap-5">
-              <div className="space-y-2">
-                <Label className="font-body text-[13px] font-medium" style={{ color: "#5B5347" }}>
-                  Consultation type
-                </Label>
-                <Select
-                  value={form.consultationType}
-                  onChange={(e) => setForm({ ...form, consultationType: e.target.value })}
-                  className={inputClass}
-                >
-                  <option>Online Consultation</option>
-                  <option>Diet Consultation</option>
-                  <option>Lifestyle Guidance</option>
-                  <option>Follow-up Consultation</option>
-                </Select>
-              </div>
+            <form onSubmit={submit} className="ayur-field flex flex-1 flex-col justify-between gap-8">
+              <div className="grid flex-1 items-start gap-8 lg:grid-cols-3">
+                <div className="flex flex-col items-start space-y-2 lg:col-span-1">
+                  <Label className="font-body text-[13px] font-medium" style={{ color: "#5B5347" }}>
+                    Consultation type
+                  </Label>
+                  <Select
+                    value={form.consultationType}
+                    onChange={(e) => setForm({ ...form, consultationType: e.target.value })}
+                    className={`${inputClass} w-full self-start`}
+                  >
+                    <option>Online Consultation</option>
+                    <option>Diet Consultation</option>
+                    <option>Lifestyle Guidance</option>
+                    <option>Follow-up Consultation</option>
+                  </Select>
+                </div>
 
-              <div className="grid gap-5 sm:grid-cols-2">
-                <div className="space-y-2">
+                <div className="space-y-2 lg:col-span-1">
                   <Label className="font-body text-[13px] font-medium" style={{ color: "#5B5347" }}>
                     Date
                   </Label>
@@ -192,7 +198,8 @@ export default function BookAppointmentPage() {
                     className={inputClass}
                   />
                 </div>
-                <div className="space-y-2">
+
+                <div className="space-y-2 lg:col-span-1">
                   <Label className="font-body text-[13px] font-medium" style={{ color: "#5B5347" }}>
                     Time
                   </Label>
@@ -204,23 +211,23 @@ export default function BookAppointmentPage() {
                     className={inputClass}
                   />
                 </div>
-              </div>
 
-              <div className="space-y-2">
-                <Label className="font-body text-[13px] font-medium" style={{ color: "#5B5347" }}>
-                  Reason
-                </Label>
-                <Textarea
-                  value={form.reason}
-                  onChange={(e) => setForm({ ...form, reason: e.target.value })}
-                  placeholder="Describe the reason for consultation"
-                  className={`${inputClass} min-h-[110px] resize-none`}
-                />
+                <div className="flex flex-col space-y-2 lg:col-span-3">
+                  <Label className="font-body text-[13px] font-medium" style={{ color: "#5B5347" }}>
+                    Reason
+                  </Label>
+                  <Textarea
+                    value={form.reason}
+                    onChange={(e) => setForm({ ...form, reason: e.target.value })}
+                    placeholder="Describe the reason for consultation"
+                    className={`${inputClass} h-full min-h-[280px] resize-none`}
+                  />
+                </div>
               </div>
 
               <Button
                 disabled={loading}
-                className="mt-1 w-full rounded-full py-5 text-[14px] font-semibold disabled:opacity-60"
+                className="w-full shrink-0 rounded-full py-6 text-[15px] font-semibold disabled:opacity-60"
                 style={{ background: "#3F5744", color: "#FBF6EC" }}
               >
                 {loading ? "Booking…" : "Book appointment"}
