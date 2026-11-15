@@ -14,10 +14,18 @@ export default function ReportCard({ report }) {
             {new Date(report.createdAt).toLocaleDateString()} · {Math.round(report.size / 1024)} KB
           </p>
         </div>
+<<<<<<< HEAD
         <Link href={`/api/reports?id=${report.id}`} target="_blank">
+=======
+        <Link href={`/api/reports/${report.id}`} target="_blank">
+>>>>>>> 14725c7d73be1e315488b68412e85ebd7a04b70d
           <Button variant="outline"><ExternalLink className="mr-2 h-4 w-4" /> View</Button>
         </Link>
       </CardContent>
     </Card>
   );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 14725c7d73be1e315488b68412e85ebd7a04b70d

@@ -5,11 +5,21 @@ const prisma = new PrismaClient();
 
 async function main() {
   const adminPassword = await bcrypt.hash("Admin@123", 12);
+<<<<<<< HEAD
   const patientPassword = await bcrypt.hash("Patient@123", 12);
 
   const admin = await prisma.user.upsert({
     where: { email: "admin@arayal.com" },
     update: {},
+=======
+
+  const admin = await prisma.user.upsert({
+    where: { email: "admin@arayal.com" },
+    update: {
+      password: adminPassword,
+      role: "ADMIN"
+    },
+>>>>>>> 14725c7d73be1e315488b68412e85ebd7a04b70d
     create: {
       name: "Dr. Princy",
       email: "admin@arayal.com",
@@ -19,6 +29,7 @@ async function main() {
     }
   });
 
+<<<<<<< HEAD
   const patient = await prisma.user.upsert({
     where: { email: "patient@arayal.com" },
     update: {},
@@ -58,6 +69,10 @@ async function main() {
   console.log("Seed complete.");
   console.log("Admin: admin@arayal.com / Admin@123");
   console.log("Patient: patient@arayal.com / Patient@123");
+=======
+  console.log("Seed complete.");
+  console.log("Admin: admin@arayal.com / Admin@123");
+>>>>>>> 14725c7d73be1e315488b68412e85ebd7a04b70d
 }
 
 main()
@@ -67,4 +82,8 @@ main()
   })
   .finally(async () => {
     await prisma.$disconnect();
+<<<<<<< HEAD
   });
+=======
+  });
+>>>>>>> 14725c7d73be1e315488b68412e85ebd7a04b70d

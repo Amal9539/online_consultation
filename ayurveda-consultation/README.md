@@ -95,12 +95,20 @@ http://localhost:3000
 Admin:
 
 - Email: admin@arayal.com
+<<<<<<< HEAD
 - Password: Admin@123
+=======
+- Password: ********
+>>>>>>> 14725c7d73be1e315488b68412e85ebd7a04b70d
 
 Patient:
 
 - Email: patient@arayal.com
+<<<<<<< HEAD
 - Password: Patient@123
+=======
+- Password: ********
+>>>>>>> 14725c7d73be1e315488b68412e85ebd7a04b70d
 
 Change these credentials and JWT_SECRET before production use.
 

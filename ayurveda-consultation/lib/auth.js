@@ -22,6 +22,7 @@ export async function verifyToken(token) {
   return payload;
 }
 
+<<<<<<< HEAD
 function readToken(request) {
   // App Router / middleware (NextRequest)
   if (typeof request.cookies?.get === "function") {
@@ -39,6 +40,10 @@ function readToken(request) {
 
 export async function getCurrentUser(request) {
   const token = readToken(request);
+=======
+export async function getCurrentUser(request) {
+  const token = request.cookies.get("token")?.value;
+>>>>>>> 14725c7d73be1e315488b68412e85ebd7a04b70d
 
   if (!token) return null;
 
@@ -67,4 +72,8 @@ export async function requireAdmin(request) {
   }
 
   return user;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 14725c7d73be1e315488b68412e85ebd7a04b70d
