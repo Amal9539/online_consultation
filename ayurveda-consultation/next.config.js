@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-<<<<<<< HEAD
     serverActions: {
       bodySizeLimit: "10mb"
     },
@@ -14,13 +13,3 @@ const nextConfig = {
 };
 
 module.exports = nextConfig;
-=======
-    serverComponentsExternalPackages: ["pdfkit"],
-    serverActions: {
-      bodySizeLimit: "10mb"
-    }
-  }
-};
-
-module.exports = nextConfig;
->>>>>>> 14725c7d73be1e315488b68412e85ebd7a04b70d
