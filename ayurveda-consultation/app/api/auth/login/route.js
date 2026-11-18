@@ -5,69 +5,49 @@ import { NextResponse } from "next/server";
 
 export const runtime = "nodejs"; // Prisma and bcrypt need Node.js runtime
 
-
 export async function POST(request) {
   try {
     const body = await request.json();
-
     const { email, password } = body;
 
     if (!email || !password) {
       return NextResponse.json(
-        {
-          message: "Email and password are required.",
-        },
+        { message: "Email/Phone and password are required." },
         { status: 400 }
       );
     }
 
-    const normalizedEmail = email.trim().toLowerCase();
+    const cleanInput = email.trim().toLowerCase();
 
-    console.log("LOGIN EMAIL:", normalizedEmail);
-
-    // Check database connection/user
-    const user = await prisma.user.findUnique({
+    // Support login via either email OR phone number
+    const user = await prisma.user.findFirst({
       where: {
-        email: normalizedEmail,
+        OR: [
+          { email: cleanInput },
+          { phone: cleanInput },
+        ],
       },
     });
 
-    console.log("USER RESULT:", user);
-
     if (!user) {
       return NextResponse.json(
-        {
-          message: "Invalid email or password.",
-        },
+        { message: "Invalid email/phone or password." },
         { status: 401 }
       );
     }
 
     if (!user.password) {
-      console.error("User does not have a password hash");
-
       return NextResponse.json(
-        {
-          message: "User account is missing password information.",
-        },
+        { message: "User account is missing password information." },
         { status: 500 }
       );
     }
 
-    console.log("PASSWORD HASH EXISTS");
-
-    const validPassword = await bcrypt.compare(
-      password,
-      user.password
-    );
-
-    console.log("PASSWORD CHECK:", validPassword);
+    const validPassword = await bcrypt.compare(password, user.password);
 
     if (!validPassword) {
       return NextResponse.json(
-        {
-          message: "Invalid email or password.",
-        },
+        { message: "Invalid email/phone or password." },
         { status: 401 }
       );
     }
@@ -79,8 +59,6 @@ export async function POST(request) {
       name: user.name,
       role: user.role,
     });
-
-    console.log("TOKEN CREATED");
 
     const response = NextResponse.json(
       {
@@ -105,18 +83,11 @@ export async function POST(request) {
 
     return response;
   } catch (error) {
-    console.error("================================");
-    console.error("LOGIN ERROR:");
-    console.error(error);
-    console.error("================================");
-
+    console.error("LOGIN ERROR:", error);
     return NextResponse.json(
       {
         message: "Server error",
-        error:
-          error instanceof Error
-            ? error.message
-            : String(error),
+        error: error instanceof Error ? error.message : String(error),
       },
       { status: 500 }
     );

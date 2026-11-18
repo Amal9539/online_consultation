@@ -21,16 +21,21 @@ export default async function handler(req, res) {
     if (req.method === "POST") {
       if (user.role !== "PATIENT") return res.status(403).json({ message: "Only patients can book appointments." });
 
-      const { date, time, consultationType, reason } = req.body;
-      if (!date || !time || !consultationType) return res.status(400).json({ message: "Date, time and consultation type are required." });
+      const { date, time, preferredSlot, consultationType, reason } = req.body;
+      if (!date || !consultationType) {
+        return res.status(400).json({ message: "Preferred date and consultation type are required." });
+      }
+
+      // Time can be assigned by doctor, or set as preferred slot
+      const assignedTime = time || preferredSlot || "Pending Doctor Assignment";
 
       const appointment = await prisma.appointment.create({
         data: {
           patientId: Number(user.userId),
           consultationType,
           date: new Date(date),
-          time,
-          reason
+          time: assignedTime,
+          reason: reason || null,
         }
       });
 

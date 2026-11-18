@@ -4,14 +4,18 @@ import { NextResponse } from "next/server";
 
 export const runtime = "nodejs"; // Prisma needs Node.js runtime
 
-
 export async function GET(request, { params }) {
   try {
     const user = await getCurrentUser(request);
     if (!user) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
 
     const id = Number(params.id);
-    const appointment = await prisma.appointment.findUnique({ where: { id } });
+    const appointment = await prisma.appointment.findUnique({
+      where: { id },
+      include: {
+        patient: { select: { id: true, name: true, email: true, phone: true } },
+      },
+    });
 
     if (!appointment) return NextResponse.json({ message: "Appointment not found." }, { status: 404 });
 
@@ -36,12 +40,15 @@ export async function PUT(request, { params }) {
     const appointment = await prisma.appointment.findUnique({ where: { id } });
     if (!appointment) return NextResponse.json({ message: "Appointment not found." }, { status: 404 });
 
-    const { zoomLink, status } = await request.json();
+    const { zoomLink, status, time, date } = await request.json();
+
     const updated = await prisma.appointment.update({
       where: { id },
       data: {
         ...(zoomLink !== undefined ? { zoomLink } : {}),
         ...(status !== undefined ? { status } : {}),
+        ...(time !== undefined ? { time } : {}),
+        ...(date ? { date: new Date(date) } : {}),
       },
     });
 
