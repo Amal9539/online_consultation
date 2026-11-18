@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Leaf } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -14,54 +15,49 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
- async function submit(e) {
-  e.preventDefault();
-  setError("");
-  setLoading(true);
+  async function submit(e) {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
 
-  try {
-    const res = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(form),
-    });
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
 
-    console.log("STATUS:", res.status);
+      const data = await res.json();
 
-    const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.message || "Login failed");
+      }
 
-    console.log("LOGIN RESPONSE:", data);
+      // Save user info so the navbar can read it
+      localStorage.setItem("user", JSON.stringify(data.user));
 
-    if (!res.ok) {
-      throw new Error(data.message || "Login failed");
+      // Navigate based on user role
+      if (data.user.role === "PATIENT") {
+        window.location.href = "/patient/dashboard";
+      } else if (data.user.role === "ADMIN") {
+        window.location.href = "/admin/dashboard";
+      } else {
+        throw new Error("Invalid user role");
+      }
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
-
-    // Save authentication token
-    localStorage.setItem("token", data.token);
-
-    // Navigate based on user role
-    if (data.user.role === "PATIENT") {
-      window.location.href = "/patient/dashboard";
-    } else if (data.user.role === "ADMIN") {
-      window.location.href = "/admin/dashboard";
-    } else {
-      throw new Error("Invalid user role");
-    }
-
-  } catch (err) {
-    console.error("LOGIN ERROR:", err);
-    setError(err.message);
-  } finally {
-    setLoading(false);
   }
-}
 
   return (
     <main className="container flex min-h-[calc(100vh-128px)] items-center justify-center py-12">
-      <Card className="w-full max-w-md">
-        <CardHeader>
+      <Card className="w-full max-w-md shadow-lg">
+        <CardHeader className="text-center">
+          <div className="mx-auto mb-2 flex h-14 w-14 items-center justify-center rounded-full bg-green-100">
+            <Leaf className="h-7 w-7 text-primary" />
+          </div>
           <CardTitle className="text-2xl">Welcome Back</CardTitle>
           <CardDescription>Login to your ARAYAL account.</CardDescription>
         </CardHeader>
@@ -70,16 +66,16 @@ export default function LoginPage() {
           <form onSubmit={submit} className="space-y-5">
             <div className="space-y-2">
               <Label>Email</Label>
-              <Input type="email" value={form.email} onChange={e => setForm({...form, email: e.target.value})} required />
+              <Input type="email" placeholder="you@example.com" value={form.email} onChange={e => setForm({...form, email: e.target.value})} required />
             </div>
             <div className="space-y-2">
               <Label>Password</Label>
-              <Input type="password" value={form.password} onChange={e => setForm({...form, password: e.target.value})} required />
+              <Input type="password" placeholder="••••••••" value={form.password} onChange={e => setForm({...form, password: e.target.value})} required />
             </div>
             <Button className="w-full" disabled={loading}>{loading ? "Logging in..." : "Login"}</Button>
           </form>
           <p className="mt-5 text-center text-sm text-muted-foreground">
-            New patient? <Link href="/register" className="font-medium text-primary">Create an account</Link>
+            New patient? <Link href="/register" className="font-medium text-primary hover:underline">Create an account</Link>
           </p>
         </CardContent>
       </Card>
