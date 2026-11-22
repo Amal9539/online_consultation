@@ -151,7 +151,12 @@ export async function POST(request) {
     }
 
     return NextResponse.json(
-      { message: "An error occurred while creating your account. Please try again." },
+      {
+        message:
+          process.env.NODE_ENV !== "production"
+            ? `Registration error: ${error?.message || error}`
+            : "An error occurred while creating your account. Please try again.",
+      },
       { status: 500 }
     );
   }
