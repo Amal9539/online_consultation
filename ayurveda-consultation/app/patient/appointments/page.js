@@ -29,26 +29,29 @@ export default function PatientAppointments() {
   return (
     <div className="min-h-[calc(100vh-80px)] bg-[#f6f9f4] w-full">
       <main className="p-5 md:p-8 w-full max-w-7xl xl:max-w-[1650px] mx-auto space-y-6">
-        {/* Header */}
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-emerald-950/10 pb-6">
-          <div>
-            <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold uppercase tracking-wider text-[#18532f]">
-              Consultation Schedule
+        {/* Ayurvedic Header Banner */}
+        <div className="relative overflow-hidden rounded-3xl border border-emerald-900/10 bg-gradient-to-r from-[#edf6ea] via-[#e2efe0] to-[#d4ebd0] p-6 sm:p-8 shadow-sm flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+          <div className="relative z-10">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100/90 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-[#18532f] border border-emerald-200">
+              <Calendar className="h-3.5 w-3.5" />
+              <span>Virtual Chikitsa Sessions</span>
             </span>
-            <h1 className="mt-2 font-serif text-3xl font-extrabold text-[#143d23]">
-              My Appointments
+            <h1 className="mt-3 font-serif text-3xl font-extrabold text-[#143d23]">
+              My Consultations & Appointments
             </h1>
-            <p className="mt-1 text-sm text-slate-600">
-              Track your scheduled sessions, assigned times, and access video meeting links.
+            <p className="mt-1 text-sm text-slate-700">
+              Track your upcoming Ayurveda sessions, doctor-assigned time slots, and connect to live video calls.
             </p>
           </div>
 
-          <Link href="/patient/book-appointment">
-            <button className="flex items-center gap-2 rounded-full bg-[#18532f] px-6 py-3 text-xs font-bold text-white shadow-md shadow-[#18532f]/20 hover:bg-[#123e23] transition-all">
-              <PlusCircle className="h-4 w-4" />
-              <span>Book New Appointment</span>
-            </button>
-          </Link>
+          <div className="relative z-10 shrink-0">
+            <Link href="/patient/book-appointment">
+              <button className="flex items-center gap-2 rounded-full bg-[#18532f] px-6 py-3.5 text-xs font-bold text-white shadow-lg shadow-[#18532f]/20 hover:bg-[#123e23] transition-all">
+                <PlusCircle className="h-4 w-4" />
+                <span>Book Consultation</span>
+              </button>
+            </Link>
+          </div>
         </div>
 
         {/* Appointments List */}

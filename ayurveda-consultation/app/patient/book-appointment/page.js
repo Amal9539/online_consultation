@@ -41,6 +41,12 @@ const consultationTypes = [
     icon: "🌱",
   },
   {
+    id: "Stress & Manas Care",
+    title: "Stress, Sleep & Manas Shanti",
+    desc: "Herbal rejuvenation, anxiety reduction, sound sleep, and mental calm.",
+    icon: "🪷",
+  },
+  {
     id: "Follow-up Consultation",
     title: "Follow-up Consultation",
     desc: "Review your ongoing healing progress and adjust medicinal prescriptions.",
@@ -108,17 +114,21 @@ export default function BookAppointmentPage() {
   return (
     <div className="min-h-[calc(100vh-80px)] bg-[#f6f9f4] w-full">
       <main className="p-5 md:p-8 w-full max-w-7xl xl:max-w-[1650px] mx-auto space-y-8">
-        {/* Header */}
-        <div className="mb-8">
-          <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold uppercase tracking-wider text-[#18532f]">
-            Online Consultation Booking
-          </span>
-          <h1 className="mt-2 font-serif text-3xl font-extrabold text-[#143d23]">
-            Schedule Your Consultation
-          </h1>
-          <p className="mt-1 text-sm text-slate-600">
-            Select your preferred consultation type and date. Dr. Princy will confirm your exact time slot and meeting link.
-          </p>
+        {/* Ayurvedic Header Banner */}
+        <div className="relative overflow-hidden rounded-3xl border border-emerald-900/10 bg-gradient-to-r from-[#edf6ea] via-[#e2efe0] to-[#d4ebd0] p-6 sm:p-8 shadow-sm">
+          <div className="relative z-10">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100/90 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-[#18532f] border border-emerald-200">
+              <Leaf className="h-3.5 w-3.5" />
+              <span>Ancient Wisdom · Holistic Healing</span>
+            </span>
+            <h1 className="mt-3 font-serif text-3xl font-extrabold tracking-tight text-[#143d23] sm:text-4xl">
+              Schedule Your Ayurvedic Consultation
+            </h1>
+            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-700">
+              Personalized one-on-one virtual consultation with <strong>Dr. Princy (BAMS)</strong>.
+              Select your consultation focus and preferred date; your exact time slot and private video meeting link will be confirmed.
+            </p>
+          </div>
         </div>
 
         {error && (
