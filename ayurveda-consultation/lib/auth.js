@@ -1,19 +1,21 @@
 import { SignJWT, jwtVerify } from "jose";
 
-const secret = new TextEncoder().encode(
-  process.env.JWT_SECRET || "development-secret"
-);
+const secretKey =
+  process.env.JWT_SECRET ||
+  "5c9f32e5c58400718cee118419782b4f0df6bb7dcfec6507e25db79e9a877514";
+
+const secret = new TextEncoder().encode(secretKey);
 
 export async function createToken(user) {
   return new SignJWT({
     userId: user.id,
     role: user.role,
     name: user.name,
-    email: user.email
+    email: user.email,
   })
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
-    .setExpirationTime("7d")
+    .setExpirationTime("24h") // 24 hours high-security session
     .sign(secret);
 }
 
@@ -54,16 +56,6 @@ export async function requireUser(request) {
 
   if (!user) {
     throw new Error("UNAUTHORIZED");
-  }
-
-  return user;
-}
-
-export async function requireAdmin(request) {
-  const user = await requireUser(request);
-
-  if (user.role !== "ADMIN") {
-    throw new Error("FORBIDDEN");
   }
 
   return user;

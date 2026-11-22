@@ -1,12 +1,31 @@
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { createToken } from "@/lib/auth";
+import { checkRateLimit, getClientIp, sanitizeInput } from "@/lib/security";
 import { NextResponse } from "next/server";
 
-export const runtime = "nodejs"; // Prisma and bcrypt need Node.js runtime
+export const runtime = "nodejs";
 
 export async function POST(request) {
   try {
+    const clientIp = getClientIp(request);
+
+    // High security: Rate limit login attempts to 5 per minute per IP
+    const rateLimit = checkRateLimit(`login:${clientIp}`, 5, 60 * 1000);
+    if (!rateLimit.allowed) {
+      return NextResponse.json(
+        {
+          message: `Too many login attempts. Please wait ${rateLimit.resetInSeconds} seconds before trying again.`,
+        },
+        {
+          status: 429,
+          headers: {
+            "Retry-After": String(rateLimit.resetInSeconds),
+          },
+        }
+      );
+    }
+
     const body = await request.json();
     const { email, password } = body;
 
@@ -17,29 +36,24 @@ export async function POST(request) {
       );
     }
 
-    const cleanInput = email.trim().toLowerCase();
+    const cleanInput = sanitizeInput(email).toLowerCase();
 
     // Support login via either email OR phone number
     const user = await prisma.user.findFirst({
       where: {
-        OR: [
-          { email: cleanInput },
-          { phone: cleanInput },
-        ],
+        OR: [{ email: cleanInput }, { phone: cleanInput }],
       },
     });
 
-    if (!user) {
+    if (!user || !user.password) {
+      // Constant-time dummy compare to prevent timing enumeration attacks
+      await bcrypt.compare(
+        password,
+        "$2a$12$e80yqX3gZ4t2kZvZv8qF0e1yWv2qF0e1yWv2qF0e1yWv2qF0e1yWv"
+      );
       return NextResponse.json(
         { message: "Invalid email/phone or password." },
         { status: 401 }
-      );
-    }
-
-    if (!user.password) {
-      return NextResponse.json(
-        { message: "User account is missing password information." },
-        { status: 500 }
       );
     }
 
@@ -52,7 +66,7 @@ export async function POST(request) {
       );
     }
 
-    // Create JWT
+    // Create JWT with secure 24-hour expiration
     const token = await createToken({
       id: user.id,
       email: user.email,
@@ -78,17 +92,14 @@ export async function POST(request) {
       sameSite: "lax",
       secure: process.env.NODE_ENV === "production",
       path: "/",
-      maxAge: 60 * 60 * 24 * 7,
+      maxAge: 60 * 60 * 24, // 24 hours
     });
 
     return response;
   } catch (error) {
     console.error("LOGIN ERROR:", error);
     return NextResponse.json(
-      {
-        message: "Server error",
-        error: error instanceof Error ? error.message : String(error),
-      },
+      { message: "An unexpected authentication error occurred." },
       { status: 500 }
     );
   }

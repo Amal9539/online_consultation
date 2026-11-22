@@ -2,14 +2,50 @@
 const nextConfig = {
   experimental: {
     serverActions: {
-      bodySizeLimit: "10mb"
+      bodySizeLimit: "10mb",
     },
     // Keep these packages out of the Next.js bundle so their
     // relative file assets (e.g. PDFKit font .afm files) are
-    // resolved from node_modules at runtime instead of from
-    // the broken .next/server/vendor-chunks path.
-    serverComponentsExternalPackages: ["pdfkit", "fontkit"]
-  }
+    // resolved from node_modules at runtime
+    serverComponentsExternalPackages: ["pdfkit", "fontkit"],
+  },
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          {
+            key: "X-DNS-Prefetch-Control",
+            value: "on",
+          },
+          {
+            key: "Strict-Transport-Security",
+            value: "max-age=63072000; includeSubDomains; preload",
+          },
+          {
+            key: "X-Frame-Options",
+            value: "SAMEORIGIN",
+          },
+          {
+            key: "X-Content-Type-Options",
+            value: "nosniff",
+          },
+          {
+            key: "X-XSS-Protection",
+            value: "1; mode=block",
+          },
+          {
+            key: "Referrer-Policy",
+            value: "strict-origin-when-cross-origin",
+          },
+          {
+            key: "Permissions-Policy",
+            value: "camera=(self), microphone=(self), geolocation=()",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;
