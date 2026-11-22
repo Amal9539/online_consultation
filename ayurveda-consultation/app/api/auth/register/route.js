@@ -144,7 +144,9 @@ export async function POST(request) {
       return NextResponse.json(
         {
           message:
-            "Database server is currently unavailable. Please verify your PostgreSQL/Docker container is running.",
+            process.env.NODE_ENV === "production"
+              ? "Database connection failed. Please ensure DATABASE_URL is configured in your Vercel project environment variables."
+              : "Database server is currently unavailable. Please verify your PostgreSQL/Docker container is running.",
         },
         { status: 503 }
       );
