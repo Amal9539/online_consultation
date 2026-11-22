@@ -74,7 +74,7 @@ export default function ForgotPasswordPage() {
 
   return (
     <div className="min-h-[calc(100vh-80px)] bg-[#f5f8f3] flex items-center justify-center p-4">
-      <div className="w-full max-w-md rounded-3xl border border-emerald-950/10 bg-white p-8 shadow-2xl">
+      <div className="w-full max-w-lg rounded-3xl border border-emerald-950/10 bg-white p-8 sm:p-10 shadow-2xl">
         <div className="text-center">
           <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#dbeee1] text-[#1c5c36]">
             <KeyRound className="h-7 w-7" />

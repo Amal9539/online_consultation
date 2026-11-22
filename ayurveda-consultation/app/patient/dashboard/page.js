@@ -60,12 +60,9 @@ export default function PatientDashboard() {
   const badgeDate = nextAppointment ? formatBadgeDate(nextAppointment.date) : { month: "UPCOMING", day: "--", weekday: "TBD" };
 
   return (
-    <div className="flex flex-col md:flex-row min-h-[calc(100vh-80px)] bg-[#f6f9f4]">
-      {/* Sidebar matching Image 3 */}
-      <PatientSidebar />
-
+    <div className="min-h-[calc(100vh-80px)] bg-[#f6f9f4] w-full">
       {/* Main Content Area */}
-      <main className="min-w-0 flex-1 p-5 md:p-8 space-y-6">
+      <main className="p-5 md:p-8 w-full max-w-7xl xl:max-w-[1650px] mx-auto space-y-6">
         {/* ======================================================== */}
         {/* 1. WELCOME BANNER (Exact Reference: Image 3)             */}
         {/* ======================================================== */}

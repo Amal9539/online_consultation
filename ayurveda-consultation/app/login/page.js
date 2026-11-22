@@ -145,7 +145,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-[calc(100vh-80px)] bg-[#f5f8f3] flex items-center justify-center p-4 sm:p-6 lg:p-10">
       {/* Outer Card Container */}
-      <div className="w-full max-w-5xl overflow-hidden rounded-3xl border border-emerald-950/10 bg-white shadow-2xl grid lg:grid-cols-12">
+      <div className="w-full max-w-6xl xl:max-w-7xl overflow-hidden rounded-3xl border border-emerald-950/10 bg-white shadow-2xl grid lg:grid-cols-12">
         {/* ======================================================== */}
         {/* LEFT COLUMN: HERBAL BRANDING (Exact Reference Image)     */}
         {/* ======================================================== */}

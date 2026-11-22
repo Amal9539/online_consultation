@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import PatientSidebar from "@/components/PatientSidebar";
 import ReportCard from "@/components/ReportCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -41,11 +40,10 @@ export default function ReportsPage() {
   }
 
   return (
-    <div className="md:flex">
-      <PatientSidebar />
-      <main className="min-w-0 flex-1 p-5 md:p-8">
+    <div className="min-h-[calc(100vh-80px)] bg-[#f6f9f4] w-full">
+      <main className="p-5 md:p-8 w-full max-w-7xl xl:max-w-[1650px] mx-auto space-y-6">
         <div className="mb-8"><h1 className="text-3xl font-bold">Medical Reports</h1><p className="text-muted-foreground">Upload PDF or image medical reports.</p></div>
-        <Card className="max-w-2xl">
+        <Card className="w-full max-w-4xl shadow-sm">
           <CardHeader><CardTitle>Upload Report</CardTitle></CardHeader>
           <CardContent>
             <form onSubmit={upload} className="flex flex-col gap-4">

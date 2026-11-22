@@ -41,7 +41,7 @@ a {
 }
 
 .container {
-  width: min(1180px, 92%);
+  width: min(1650px, 95%);
   margin-inline: auto;
 }
 

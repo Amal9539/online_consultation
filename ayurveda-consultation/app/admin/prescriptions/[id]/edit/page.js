@@ -152,8 +152,7 @@ export default function EditPrescriptionPage() {
 
   if (loading) {
     return (
-      <div className="md:flex min-h-screen bg-[#f2ece0]">
-        <AdminSidebar />
+      <div className="min-h-screen bg-[#f2ece0] w-full">
         <main className="flex min-w-0 flex-1 items-center justify-center p-5 pt-28 md:p-8 md:pt-28">
           <div className="flex items-center gap-2 text-sm text-stone-500">
             <Loader2 className="h-4 w-4 animate-spin text-emerald-700" />
@@ -165,8 +164,7 @@ export default function EditPrescriptionPage() {
   }
 
   return (
-    <div className="md:flex min-h-screen bg-[#f2ece0]">
-      <AdminSidebar />
+    <div className="min-h-screen bg-[#f2ece0] w-full">
       <main className="flex min-w-0 flex-1 justify-center p-5 pt-28 md:p-8 md:pt-28">
         <div className="w-full max-w-2xl">
           {/* Prescription pad document */}

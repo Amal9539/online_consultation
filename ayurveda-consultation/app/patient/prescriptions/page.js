@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import PatientSidebar from "@/components/PatientSidebar";
 import PrescriptionCard from "@/components/PrescriptionCard";
 
 export default function PrescriptionsPage() {
@@ -12,9 +11,8 @@ export default function PrescriptionsPage() {
   }, []);
 
   return (
-    <div className="md:flex">
-      <PatientSidebar />
-      <main className="min-w-0 flex-1 p-5 md:p-8">
+    <div className="min-h-[calc(100vh-80px)] bg-[#f6f9f4] w-full">
+      <main className="p-5 md:p-8 w-full max-w-7xl xl:max-w-[1650px] mx-auto space-y-6">
         <div className="mb-8"><h1 className="text-3xl font-bold">My Prescriptions</h1><p className="text-muted-foreground">View and download your digital prescriptions.</p></div>
         <div className="grid gap-4">{prescriptions.map(p => <PrescriptionCard key={p.id} prescription={p} />)}</div>
         {!prescriptions.length && <p className="text-muted-foreground">No prescriptions available yet.</p>}

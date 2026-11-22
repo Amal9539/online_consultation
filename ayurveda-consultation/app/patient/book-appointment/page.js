@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import PatientSidebar from "@/components/PatientSidebar";
 import {
   Calendar,
   Clock,
@@ -107,10 +106,8 @@ export default function BookAppointmentPage() {
   }
 
   return (
-    <div className="flex flex-col md:flex-row min-h-[calc(100vh-80px)] bg-[#f6f9f4]">
-      <PatientSidebar />
-
-      <main className="min-w-0 flex-1 p-5 md:p-8">
+    <div className="min-h-[calc(100vh-80px)] bg-[#f6f9f4] w-full">
+      <main className="p-5 md:p-8 w-full max-w-7xl xl:max-w-[1650px] mx-auto space-y-8">
         {/* Header */}
         <div className="mb-8">
           <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold uppercase tracking-wider text-[#18532f]">
@@ -143,7 +140,7 @@ export default function BookAppointmentPage() {
                 Choose the focus area of your Ayurvedic consultation
               </p>
 
-              <div className="grid gap-3 sm:grid-cols-2">
+              <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
                 {consultationTypes.map((type) => {
                   const isSelected = form.consultationType === type.id;
                   return (
@@ -209,7 +206,7 @@ export default function BookAppointmentPage() {
                 Tell us which part of the day works best. The doctor will assign the specific time slot.
               </p>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
                 {timeWindows.map((slot) => {
                   const slotValue = `${slot.label} (${slot.time})`;
                   const isSelected = form.preferredSlot === slotValue;

@@ -50,8 +50,8 @@ export default function PatientDetailsPage() {
   if (!data) return <div className="p-8 text-center text-slate-500">Loading patient details...</div>;
 
   return (
-    <div className="min-h-[calc(100vh-80px)] bg-[#f6f9f4]">
-      <main className="p-5 md:p-8 max-w-7xl mx-auto space-y-6">
+    <div className="min-h-[calc(100vh-80px)] bg-[#f6f9f4] w-full">
+      <main className="p-5 md:p-8 w-full max-w-7xl xl:max-w-[1650px] mx-auto space-y-6">
         {/* Back Link & Header */}
         <div>
           <Link

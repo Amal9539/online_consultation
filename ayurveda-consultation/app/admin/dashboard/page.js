@@ -29,8 +29,8 @@ export default function AdminDashboard() {
   }, []);
 
   return (
-    <div className="min-h-[calc(100vh-80px)] bg-[#f6f9f4]">
-      <main className="p-5 md:p-8 max-w-7xl mx-auto space-y-6">
+    <div className="min-h-[calc(100vh-80px)] bg-[#f6f9f4] w-full">
+      <main className="p-5 md:p-8 w-full max-w-7xl xl:max-w-[1650px] mx-auto space-y-6">
         {/* Banner */}
         <div className="rounded-3xl border border-emerald-900/10 bg-gradient-to-r from-[#eef6ea] to-[#d8ebd1] p-6 sm:p-8 shadow-sm">
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#18532f]">

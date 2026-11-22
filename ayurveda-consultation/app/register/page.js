@@ -185,7 +185,7 @@ try {
 
 }
 
-return ( <main className="min-h-screen bg-[#f8f5e9] flex items-center justify-center px-4 py-12"> <Card className="w-full max-w-md shadow-lg"> <CardHeader className="text-center"> <CardTitle className="text-2xl">
+return ( <main className="min-h-screen bg-[#f8f5e9] flex items-center justify-center px-4 py-12"> <Card className="w-full max-w-xl shadow-lg"> <CardHeader className="text-center"> <CardTitle className="text-2xl">
 Create Patient Account </CardTitle>
 
 

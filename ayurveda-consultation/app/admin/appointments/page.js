@@ -105,8 +105,8 @@ export default function AdminAppointmentsPage() {
   });
 
   return (
-    <div className="min-h-[calc(100vh-80px)] bg-[#f6f9f4]">
-      <main className="p-5 md:p-8 max-w-7xl mx-auto space-y-6">
+    <div className="min-h-[calc(100vh-80px)] bg-[#f6f9f4] w-full">
+      <main className="p-5 md:p-8 w-full max-w-7xl xl:max-w-[1650px] mx-auto space-y-6">
         {/* Header */}
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-emerald-950/10 pb-6">
           <div>
