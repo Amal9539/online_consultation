@@ -245,16 +245,19 @@ export default function LoginPage() {
 
             {/* Login Form */}
             <form onSubmit={submit} className="space-y-4">
-              {/* Input 1: Email or Mobile Number */}
+              {/* Input 1: Email Address (Username) */}
               <div className="relative">
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-emerald-800/60">
-                  <User className="h-5 w-5" />
+                  <Mail className="h-5 w-5" />
                 </div>
                 <input
-                  type="text"
+                  type="email"
+                  name="email"
+                  id="email"
+                  autoComplete="username"
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  placeholder="Email Address or Mobile Number"
+                  placeholder="Email Address (Username)"
                   required
                   className="w-full rounded-2xl border border-slate-300 bg-white py-3.5 pl-12 pr-4 text-sm text-slate-800 placeholder-slate-400 shadow-sm transition-all focus:border-[#1c5c36] focus:outline-none focus:ring-2 focus:ring-[#1c5c36]/20"
                 />
@@ -267,6 +270,9 @@ export default function LoginPage() {
                 </div>
                 <input
                   type={showPassword ? "text" : "password"}
+                  name="password"
+                  id="password"
+                  autoComplete="current-password"
                   value={form.password}
                   onChange={(e) => setForm({ ...form, password: e.target.value })}
                   placeholder="Password"
@@ -376,17 +382,19 @@ export default function LoginPage() {
               <form onSubmit={handleForgotLookup} className="mt-5 space-y-4">
                 <div>
                   <label className="text-xs font-semibold text-slate-700 mb-1 block">
-                    Registered Email or Phone
+                    Registered Email Address (Username)
                   </label>
                   <div className="relative">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
                       <Mail className="h-4 w-4" />
                     </div>
                     <input
-                      type="text"
+                      type="email"
+                      name="email"
+                      autoComplete="email"
                       value={forgotIdentifier}
                       onChange={(e) => setForgotIdentifier(e.target.value)}
-                      placeholder="e.g. name@example.com or 9846000000"
+                      placeholder="e.g. name@example.com"
                       required
                       className="w-full rounded-xl border border-slate-300 py-3 pl-10 pr-4 text-xs text-slate-800 focus:border-[#1c5c36] focus:outline-none focus:ring-1 focus:ring-[#1c5c36]"
                     />

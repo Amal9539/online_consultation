@@ -91,7 +91,7 @@ export default function ForgotPasswordPage() {
           </h1>
           <p className="mt-1 text-xs text-slate-500">
             {step === 1
-              ? "Enter your registered email or phone to receive a 2FA security code"
+              ? "Enter your registered email address to receive a 2FA security code"
               : "Verify your one-time security code and create a strong password"}
           </p>
         </div>
@@ -125,17 +125,19 @@ export default function ForgotPasswordPage() {
           <form onSubmit={handleLookup} className="mt-6 space-y-4">
             <div>
               <label className="text-xs font-semibold text-slate-700 mb-1 block">
-                Registered Email or Mobile Number
+                Registered Email Address (Username)
               </label>
               <div className="relative">
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
                   <Mail className="h-4 w-4" />
                 </div>
                 <input
-                  type="text"
+                  type="email"
+                  name="email"
+                  autoComplete="email"
                   value={identifier}
                   onChange={(e) => setIdentifier(e.target.value)}
-                  placeholder="e.g. name@example.com or 9846000000"
+                  placeholder="e.g. name@example.com"
                   required
                   className="w-full rounded-xl border border-slate-300 py-3 pl-10 pr-4 text-xs text-slate-800 focus:border-[#1c5c36] focus:outline-none focus:ring-1 focus:ring-[#1c5c36]"
                 />

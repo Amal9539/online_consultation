@@ -31,7 +31,7 @@ export async function POST(request) {
 
     if (!email || !password) {
       return NextResponse.json(
-        { message: "Email/Phone and password are required." },
+        { message: "Email and password are required." },
         { status: 400 }
       );
     }
@@ -52,7 +52,7 @@ export async function POST(request) {
         "$2a$12$e80yqX3gZ4t2kZvZv8qF0e1yWv2qF0e1yWv2qF0e1yWv2qF0e1yWv"
       );
       return NextResponse.json(
-        { message: "Invalid email/phone or password." },
+        { message: "Invalid email or password." },
         { status: 401 }
       );
     }
@@ -61,7 +61,7 @@ export async function POST(request) {
 
     if (!validPassword) {
       return NextResponse.json(
-        { message: "Invalid email/phone or password." },
+        { message: "Invalid email or password." },
         { status: 401 }
       );
     }

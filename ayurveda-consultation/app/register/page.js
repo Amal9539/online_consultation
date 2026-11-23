@@ -279,7 +279,7 @@ export default function RegisterPage() {
             <form onSubmit={handleSubmit} className="space-y-4" noValidate>
               {/* 1. Full Name */}
               <div>
-                <label className="text-xs font-bold text-[#143d23] mb-1.5 flex items-center justify-between">
+                <label htmlFor="register-name" className="text-xs font-bold text-[#143d23] mb-1.5 flex items-center justify-between">
                   <span>Full Name *</span>
                   {touched.name && (
                     <span className="text-[10px]">
@@ -301,6 +301,9 @@ export default function RegisterPage() {
                   </div>
                   <input
                     type="text"
+                    id="register-name"
+                    name="name"
+                    autoComplete="name"
                     value={form.name}
                     onChange={(e) => update("name", e.target.value)}
                     onBlur={() => handleBlur("name")}
@@ -315,47 +318,9 @@ export default function RegisterPage() {
                 </div>
               </div>
 
-              {/* 2. Email Address */}
+              {/* 2. Phone Number (Optional) */}
               <div>
-                <label className="text-xs font-bold text-[#143d23] mb-1.5 flex items-center justify-between">
-                  <span>Email Address *</span>
-                  {touched.email && (
-                    <span className="text-[10px]">
-                      {isEmailValid ? (
-                        <span className="text-emerald-700 flex items-center gap-1">
-                          <CheckCircle2 className="h-3 w-3" /> Valid email
-                        </span>
-                      ) : (
-                        <span className="text-rose-600 flex items-center gap-1">
-                          <XCircle className="h-3 w-3" /> Valid email required
-                        </span>
-                      )}
-                    </span>
-                  )}
-                </label>
-                <div className="relative">
-                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
-                    <Mail className="h-4 w-4" />
-                  </div>
-                  <input
-                    type="email"
-                    value={form.email}
-                    onChange={(e) => update("email", e.target.value)}
-                    onBlur={() => handleBlur("email")}
-                    placeholder="name@example.com"
-                    required
-                    className={`w-full rounded-2xl border py-3 pl-11 pr-4 text-xs text-slate-800 shadow-sm transition-all focus:outline-none focus:ring-2 ${
-                      touched.email && !isEmailValid
-                        ? "border-rose-300 bg-rose-50/30 focus:border-rose-500 focus:ring-rose-200"
-                        : "border-slate-300 focus:border-[#1c5c36] focus:ring-[#1c5c36]/20 bg-white"
-                    }`}
-                  />
-                </div>
-              </div>
-
-              {/* 3. Phone Number */}
-              <div>
-                <label className="text-xs font-bold text-[#143d23] mb-1.5 flex items-center justify-between">
+                <label htmlFor="register-phone" className="text-xs font-bold text-[#143d23] mb-1.5 flex items-center justify-between">
                   <span>Mobile Phone Number (Optional)</span>
                   {form.phone && touched.phone && (
                     <span className="text-[10px]">
@@ -377,6 +342,9 @@ export default function RegisterPage() {
                   </div>
                   <input
                     type="tel"
+                    id="register-phone"
+                    name="phone"
+                    autoComplete="tel"
                     value={form.phone}
                     onChange={(e) => update("phone", e.target.value)}
                     onBlur={() => handleBlur("phone")}
@@ -386,9 +354,50 @@ export default function RegisterPage() {
                 </div>
               </div>
 
+              {/* 3. Email Address (Login Username) */}
+              <div>
+                <label htmlFor="register-email" className="text-xs font-bold text-[#143d23] mb-1.5 flex items-center justify-between">
+                  <span>Email Address (Login Username) *</span>
+                  {touched.email && (
+                    <span className="text-[10px]">
+                      {isEmailValid ? (
+                        <span className="text-emerald-700 flex items-center gap-1">
+                          <CheckCircle2 className="h-3 w-3" /> Valid email
+                        </span>
+                      ) : (
+                        <span className="text-rose-600 flex items-center gap-1">
+                          <XCircle className="h-3 w-3" /> Valid email required
+                        </span>
+                      )}
+                    </span>
+                  )}
+                </label>
+                <div className="relative">
+                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
+                    <Mail className="h-4 w-4" />
+                  </div>
+                  <input
+                    type="email"
+                    id="register-email"
+                    name="email"
+                    autoComplete="username"
+                    value={form.email}
+                    onChange={(e) => update("email", e.target.value)}
+                    onBlur={() => handleBlur("email")}
+                    placeholder="name@example.com"
+                    required
+                    className={`w-full rounded-2xl border py-3 pl-11 pr-4 text-xs text-slate-800 shadow-sm transition-all focus:outline-none focus:ring-2 ${
+                      touched.email && !isEmailValid
+                        ? "border-rose-300 bg-rose-50/30 focus:border-rose-500 focus:ring-rose-200"
+                        : "border-slate-300 focus:border-[#1c5c36] focus:ring-[#1c5c36]/20 bg-white"
+                    }`}
+                  />
+                </div>
+              </div>
+
               {/* 4. Password */}
               <div>
-                <label className="text-xs font-bold text-[#143d23] mb-1.5 flex items-center justify-between">
+                <label htmlFor="register-password" className="text-xs font-bold text-[#143d23] mb-1.5 flex items-center justify-between">
                   <span>Create Password *</span>
                   {touched.password && (
                     <span className="text-[10px]">
@@ -408,6 +417,9 @@ export default function RegisterPage() {
                   </div>
                   <input
                     type={showPassword ? "text" : "password"}
+                    id="register-password"
+                    name="password"
+                    autoComplete="new-password"
                     value={form.password}
                     onChange={(e) => update("password", e.target.value)}
                     onBlur={() => handleBlur("password")}
@@ -476,7 +488,7 @@ export default function RegisterPage() {
 
               {/* 5. Confirm Password */}
               <div>
-                <label className="text-xs font-bold text-[#143d23] mb-1.5 flex items-center justify-between">
+                <label htmlFor="register-confirm-password" className="text-xs font-bold text-[#143d23] mb-1.5 flex items-center justify-between">
                   <span>Confirm Password *</span>
                   {touched.confirmPassword && (
                     <span className="text-[10px]">
@@ -498,6 +510,9 @@ export default function RegisterPage() {
                   </div>
                   <input
                     type={showConfirmPassword ? "text" : "password"}
+                    id="register-confirm-password"
+                    name="confirmPassword"
+                    autoComplete="new-password"
                     value={form.confirmPassword}
                     onChange={(e) => update("confirmPassword", e.target.value)}
                     onBlur={() => handleBlur("confirmPassword")}

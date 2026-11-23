@@ -35,7 +35,7 @@ export async function POST(request) {
 
     if (!identifier) {
       return NextResponse.json(
-        { message: "Please provide your registered email or phone number." },
+        { message: "Please provide your registered email address." },
         { status: 400 }
       );
     }
@@ -53,7 +53,7 @@ export async function POST(request) {
     // to prevent username enumeration, or inform user politely.
     if (!user) {
       return NextResponse.json(
-        { message: "No account found with this email or mobile number." },
+        { message: "No account found with this email address." },
         { status: 404 }
       );
     }
