@@ -1,28 +1,31 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+/* ─── Google Fonts: Manrope (headings) + Inter (body) ──────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ─── shadcn/ui CSS variable tokens (required by components/ui/*) ────────── */
 :root {
-  --background: 44 38% 97%;       /* #fcfaf4 authentic warm herbal parchment */
-  --foreground: 140 45% 12%;      /* #112c1b sacred deep forest green */
-  --card: 0 0% 100%;
-  --card-foreground: 140 45% 12%;
-  --primary: 144 53% 24%;         /* #1c5c36 vibrant herbal emerald */
-  --primary-foreground: 0 0% 100%;
-  --secondary: 42 55% 52%;        /* #c59b3f ayurvedic warm gold */
-  --secondary-foreground: 140 45% 12%;
-  --muted: 130 20% 93%;
-  --muted-foreground: 140 12% 40%;
-  --accent: 130 25% 91%;
-  --accent-foreground: 140 45% 12%;
-  --border: 130 20% 86%;
-  --input: 130 18% 82%;
-  --ring: 144 53% 24%;
-  --radius: 1rem;
+  --background:          120 14% 97%;   /* #F4F7F3  brand-bg              */
+  --foreground:          155 15% 18%;   /* #26352D  brand-dark            */
+  --card:                0   0%  100%;
+  --card-foreground:     155 15% 18%;
+  --primary:             150 29% 28%;   /* #315B45  brand-primary         */
+  --primary-foreground:  0   0%  100%;
+  --secondary:           138 15% 50%;   /* #6F9278  brand-secondary       */
+  --secondary-foreground:155 15% 18%;
+  --muted:               120 14% 92%;
+  --muted-foreground:    155  8% 45%;
+  --accent:              120 14% 92%;
+  --accent-foreground:   155 15% 18%;
+  --border:              138 20% 86%;
+  --input:               138 18% 82%;
+  --ring:                150 29% 28%;
+  --radius:              0.75rem;       /* 12px — slightly tighter than old 1rem */
 }
 
+/* ─── Reset ─────────────────────────────────────────────────────────────── */
 * {
   border-color: hsl(var(--border));
 }
@@ -31,91 +34,69 @@ html {
   scroll-behavior: smooth;
 }
 
+/* ─── Base typography ───────────────────────────────────────────────────── */
 body {
   margin: 0;
-  background-color: #fbf8f2;
-  color: #162f1e;
-  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  background-color: #F4F7F3;
+  color: #26352D;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3, h4, .font-serif {
-  font-family: 'Playfair Display', Georgia, serif;
-  letter-spacing: -0.015em;
+/* All heading elements use Manrope */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Manrope', system-ui, sans-serif;
+  letter-spacing: -0.02em;
 }
 
-.font-display {
-  font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
-  letter-spacing: 0.05em;
+/* .font-serif classes in legacy JSX now resolve to Manrope */
+.font-serif {
+  font-family: 'Manrope', system-ui, sans-serif;
+  letter-spacing: -0.02em;
 }
 
+/* Links */
 a {
   transition: all 0.2s ease;
 }
 
+/* ─── Layout container ──────────────────────────────────────────────────── */
 .container {
-  width: min(1650px, 95%);
+  width: min(1280px, 95%);
   margin-inline: auto;
 }
 
-/* Authentic Ayurvedic Hero & Card Textures */
-.hero-pattern {
-  background:
-    radial-gradient(circle at 85% 15%, rgba(28, 92, 54, 0.12), transparent 35%),
-    radial-gradient(circle at 15% 85%, rgba(194, 154, 71, 0.10), transparent 30%),
-    linear-gradient(135deg, #fbf7ee 0%, #f4f8f0 50%, #edf5e9 100%);
+/* ─── Utility badges ────────────────────────────────────────────────────── */
+.badge-primary {
+  background-color: rgba(49, 91, 69, 0.10);
+  color: #315B45;
+  border: 1px solid rgba(49, 91, 69, 0.18);
 }
 
-.ayur-banner-gradient {
-  background: linear-gradient(120deg, #edf6ea 0%, #e2efe0 45%, #d4ebd0 100%);
+.badge-accent {
+  background-color: rgba(181, 138, 85, 0.10);
+  color: #B58A55;
+  border: 1px solid rgba(181, 138, 85, 0.25);
 }
 
-.ayur-gold-gradient {
-  background: linear-gradient(135deg, #fbf2db 0%, #fae7ba 50%, #f4d692 100%);
-}
-
-.ayur-card-bg {
-  background: rgba(255, 255, 255, 0.94);
-  backdrop-filter: blur(8px);
-}
-
-/* Subtle botanical leaf texture */
-.ayur-leaf-glow {
-  box-shadow: 0 10px 30px -10px rgba(20, 61, 35, 0.08);
-}
-
-/* Ayurvedic Pill Badges */
-.badge-ayur-green {
-  background-color: #eaf4ec;
-  color: #144627;
-  border: 1px solid rgba(28, 92, 54, 0.15);
-}
-
-.badge-ayur-gold {
-  background-color: #fdf6e6;
-  color: #8c6314;
-  border: 1px solid rgba(194, 154, 71, 0.3);
-}
-
-/* Animations for dropdowns */
+/* ─── Animations ────────────────────────────────────────────────────────── */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-8px); }
-  to { opacity: 1; transform: translateY(0); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .animate-in {
   animation: fadeIn 0.2s ease-out;
 }
 
-/* Smooth details/summary FAQ animation */
+/* ─── FAQ details/summary (keep existing behaviour) ─────────────────────── */
 details summary {
   list-style: none;
 }
 details summary::-webkit-details-marker {
   display: none;
 }
-
 details[open] summary ~ * {
   animation: fadeIn 0.2s ease-out;
 }
