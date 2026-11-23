@@ -276,7 +276,7 @@ export default function RegisterPage() {
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+            <form onSubmit={handleSubmit} className="space-y-4" autoComplete="on" noValidate>
               {/* 1. Full Name */}
               <div>
                 <label htmlFor="register-name" className="text-xs font-bold text-[#143d23] mb-1.5 flex items-center justify-between">
@@ -318,10 +318,51 @@ export default function RegisterPage() {
                 </div>
               </div>
 
-              {/* 2. Phone Number (Optional) */}
+              {/* 2. Email Address — placed right above password so browser saves it as username */}
+              <div>
+                <label htmlFor="register-email" className="text-xs font-bold text-[#143d23] mb-1.5 flex items-center justify-between">
+                  <span>Email Address <span className="font-normal text-emerald-700">(your login username)</span> *</span>
+                  {touched.email && (
+                    <span className="text-[10px]">
+                      {isEmailValid ? (
+                        <span className="text-emerald-700 flex items-center gap-1">
+                          <CheckCircle2 className="h-3 w-3" /> Valid email
+                        </span>
+                      ) : (
+                        <span className="text-rose-600 flex items-center gap-1">
+                          <XCircle className="h-3 w-3" /> Valid email required
+                        </span>
+                      )}
+                    </span>
+                  )}
+                </label>
+                <div className="relative">
+                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
+                    <Mail className="h-4 w-4" />
+                  </div>
+                  <input
+                    type="email"
+                    id="register-email"
+                    name="email"
+                    autoComplete="email"
+                    value={form.email}
+                    onChange={(e) => update("email", e.target.value)}
+                    onBlur={() => handleBlur("email")}
+                    placeholder="name@example.com"
+                    required
+                    className={`w-full rounded-2xl border py-3 pl-11 pr-4 text-xs text-slate-800 shadow-sm transition-all focus:outline-none focus:ring-2 ${
+                      touched.email && !isEmailValid
+                        ? "border-rose-300 bg-rose-50/30 focus:border-rose-500 focus:ring-rose-200"
+                        : "border-slate-300 focus:border-[#1c5c36] focus:ring-[#1c5c36]/20 bg-white"
+                    }`}
+                  />
+                </div>
+              </div>
+
+              {/* 3. Phone Number (Optional) — placed AFTER email, so browser won't mistake it for username */}
               <div>
                 <label htmlFor="register-phone" className="text-xs font-bold text-[#143d23] mb-1.5 flex items-center justify-between">
-                  <span>Mobile Phone Number (Optional)</span>
+                  <span>Mobile Phone Number <span className="font-normal text-slate-400">(optional)</span></span>
                   {form.phone && touched.phone && (
                     <span className="text-[10px]">
                       {isPhoneValid ? (
@@ -350,47 +391,6 @@ export default function RegisterPage() {
                     onBlur={() => handleBlur("phone")}
                     placeholder="e.g. 9846000000"
                     className="w-full rounded-2xl border border-slate-300 py-3 pl-11 pr-4 text-xs text-slate-800 shadow-sm focus:border-[#1c5c36] focus:outline-none focus:ring-2 focus:ring-[#1c5c36]/20 bg-white"
-                  />
-                </div>
-              </div>
-
-              {/* 3. Email Address (Login Username) */}
-              <div>
-                <label htmlFor="register-email" className="text-xs font-bold text-[#143d23] mb-1.5 flex items-center justify-between">
-                  <span>Email Address (Login Username) *</span>
-                  {touched.email && (
-                    <span className="text-[10px]">
-                      {isEmailValid ? (
-                        <span className="text-emerald-700 flex items-center gap-1">
-                          <CheckCircle2 className="h-3 w-3" /> Valid email
-                        </span>
-                      ) : (
-                        <span className="text-rose-600 flex items-center gap-1">
-                          <XCircle className="h-3 w-3" /> Valid email required
-                        </span>
-                      )}
-                    </span>
-                  )}
-                </label>
-                <div className="relative">
-                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
-                    <Mail className="h-4 w-4" />
-                  </div>
-                  <input
-                    type="email"
-                    id="register-email"
-                    name="email"
-                    autoComplete="username"
-                    value={form.email}
-                    onChange={(e) => update("email", e.target.value)}
-                    onBlur={() => handleBlur("email")}
-                    placeholder="name@example.com"
-                    required
-                    className={`w-full rounded-2xl border py-3 pl-11 pr-4 text-xs text-slate-800 shadow-sm transition-all focus:outline-none focus:ring-2 ${
-                      touched.email && !isEmailValid
-                        ? "border-rose-300 bg-rose-50/30 focus:border-rose-500 focus:ring-rose-200"
-                        : "border-slate-300 focus:border-[#1c5c36] focus:ring-[#1c5c36]/20 bg-white"
-                    }`}
                   />
                 </div>
               </div>
