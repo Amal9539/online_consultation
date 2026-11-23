@@ -244,35 +244,44 @@ export default function LoginPage() {
             )}
 
             {/* Login Form */}
-            <form onSubmit={submit} className="space-y-4">
+            <form onSubmit={submit} className="space-y-4" autoComplete="on">
               {/* Input 1: Email Address (Username) */}
-              <div className="relative">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-emerald-800/60">
-                  <Mail className="h-5 w-5" />
+              <div>
+                <label htmlFor="email" className="block text-xs font-bold text-[#143d23] mb-1.5">
+                  Email Address <span className="font-normal text-slate-400">(your username)</span>
+                </label>
+                <div className="relative">
+                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-emerald-800/60">
+                    <Mail className="h-5 w-5" />
+                  </div>
+                  <input
+                    type="email"
+                    name="email"
+                    id="email"
+                    autoComplete="email"
+                    value={form.email}
+                    onChange={(e) => setForm({ ...form, email: e.target.value })}
+                    placeholder="name@example.com"
+                    required
+                    className="w-full rounded-2xl border border-slate-300 bg-white py-3.5 pl-12 pr-4 text-sm text-slate-800 placeholder-slate-400 shadow-sm transition-all focus:border-[#1c5c36] focus:outline-none focus:ring-2 focus:ring-[#1c5c36]/20"
+                  />
                 </div>
-                <input
-                  type="email"
-                  name="email"
-                  id="email"
-                  autoComplete="username"
-                  value={form.email}
-                  onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  placeholder="Email Address (Username)"
-                  required
-                  className="w-full rounded-2xl border border-slate-300 bg-white py-3.5 pl-12 pr-4 text-sm text-slate-800 placeholder-slate-400 shadow-sm transition-all focus:border-[#1c5c36] focus:outline-none focus:ring-2 focus:ring-[#1c5c36]/20"
-                />
               </div>
 
               {/* Input 2: Password with Eye Toggle */}
               <div className="relative">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-emerald-800/60">
-                  <Lock className="h-5 w-5" />
-                </div>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  id="password"
-                  autoComplete="current-password"
+                <label htmlFor="password" className="block text-xs font-bold text-[#143d23] mb-1.5">
+                  Password
+                </label>
+                <div className="relative">
+                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-emerald-800/60">
+                    <Lock className="h-5 w-5" />
+                  </div>
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    id="password"
+                    autoComplete="current-password"
                   value={form.password}
                   onChange={(e) => setForm({ ...form, password: e.target.value })}
                   placeholder="Password"
@@ -288,6 +297,7 @@ export default function LoginPage() {
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
               </div>
+            </div>
 
               {/* Remember Me & Forgot Password Row */}
               <div className="flex items-center justify-between pt-1 text-xs">

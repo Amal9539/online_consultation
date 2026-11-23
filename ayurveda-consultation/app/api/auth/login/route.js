@@ -31,18 +31,23 @@ export async function POST(request) {
 
     if (!email || !password) {
       return NextResponse.json(
-        { message: "Email and password are required." },
+        { message: "Email address and password are required." },
         { status: 400 }
       );
     }
 
+    // Validate it looks like an email address
     const cleanInput = sanitizeInput(email).toLowerCase();
+    if (!cleanInput.includes("@")) {
+      return NextResponse.json(
+        { message: "Please enter a valid email address to login." },
+        { status: 400 }
+      );
+    }
 
-    // Support login via either email OR phone number
-    const user = await prisma.user.findFirst({
-      where: {
-        OR: [{ email: cleanInput }, { phone: cleanInput }],
-      },
+    // Login by email only — email is the unique account identifier (username)
+    const user = await prisma.user.findUnique({
+      where: { email: cleanInput },
     });
 
     if (!user || !user.password) {
